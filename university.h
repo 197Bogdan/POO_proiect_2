@@ -10,7 +10,7 @@ public:
 	Student(std::string name, int birth_year, std::string gender, int credits_number, double grades_average);
 	Student(const Student&);
 	Student();
-
+	
 	void SetCredits(int);
 	int GetCredits() const;
 	void SetGradeAvg(double);
