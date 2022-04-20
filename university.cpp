@@ -4,7 +4,7 @@
 #include "university.h"
 
 
-std::vector<std::string> Teacher::valid_subjects = { "mate, info" };
+std::vector<std::string> Teacher::valid_subjects = { "mate", "info" };
 std::vector<std::string> Teacher::GetValidSubjects()
 {
 	return valid_subjects;
@@ -192,12 +192,12 @@ void Student::operator=(const Student& student)
 
 /// ///////////////////////////////////
 
-StudentTeacher::StudentTeacher(): Student(), Teacher() {}
+StudentTeacher::StudentTeacher(): Person(), Student(), Teacher() {}
 
 StudentTeacher::StudentTeacher(std::string name, int birth_year, std::string gender, int credits, double grades_avg, std::string subject, int experience_years): 
-													Student(name, birth_year, gender, credits, grades_avg), Teacher(name, birth_year, gender, subject, experience_years) {}
+													Person(name, birth_year, gender), Student(name, birth_year, gender, credits, grades_avg), Teacher(name, birth_year, gender, subject, experience_years) {}
 
-StudentTeacher::StudentTeacher(const StudentTeacher& st): Student(st), Teacher(st) {}
+StudentTeacher::StudentTeacher(const StudentTeacher& st): Person(st), Student(st), Teacher(st) {}
 
 StudentTeacher::~StudentTeacher()
 {
@@ -217,7 +217,7 @@ void StudentTeacher::Read(std::istream& in)
 			SetName(nume);
 			std::cout << "Anul nasterii: " << std::endl;
 			getline(in, nastere);
-			SetBirthYear(stoi(gen));
+			SetBirthYear(stoi(nastere));
 			std::cout << "Sex: " << std::endl;
 			getline(in, gen);
 			SetGender(gen);
