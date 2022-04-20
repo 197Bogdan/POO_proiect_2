@@ -16,102 +16,29 @@ void ClearScreen()
 #endif
 }
 
-void FluxTestare1()
+string user_input;
+int person_count = 0, building_count = 0;
+Person* p_person[100];
+Building* p_building[100];
+
+void meniu()
 {
-	Student s1, s2, s3, s4;
-	Teacher t1, t2;
-	string nume = "134";
-	Group g(nume);	// cream o grupa goala, doar pe baza numelui
 
-	cin >> s1;		// dan 1997 masculin 5.5 20
-	cout << s1;		// afisam informatiile studentului
-	cout << "--------------------" << endl;
-
-	cin >> s2;		// denis 1998 7.25 40
-	cin >> s3;		// max 1996 8.1 45
-	cout << "--------------------" << endl;
-
-	cin >> t1;		// Jim 1944 Mate 20
-	cout << t1;		// afisam informatiile profesorului
-	cout << "--------------------" << endl;
-
-	cin >> t2;		// James 1945 Info 25
-	cout << "--------------------" << endl;
-
-	g.AddStudent(s1);	// adaugam un student
-	g.AddTeacher(t1);	// adaugam un profesor
-	vector<Student> studenti = { s2, s3 };
-	g.AddStudents(studenti);	// adaugam un vector de studenti
-	g.AddTeacher(t2);	// adaugam un profesor
-	cout << g;	// afisam infomatiile grupei
-	cout << "--------------------" << endl;
-	system("pause");	// press any key to continue
-	cout << endl;
-	cout << "--------------------" << endl;
-	cout << "--------------------" << endl;
-	cout << "--------------------" << endl;
-
-	g.RemoveStudent(s2);		// eliminam un student pe baza obiectului
-	g.RemoveTeacher("Jim");		// eliminam un profesor pe baza numelui
-	g.RemoveTeacher("Karl");	// incercam sa eliminam un profesor care nu exista
-	cout << "--------------------" << endl;
-	cout << g;		// afisam informatiile grupei
-	cout << "--------------------" << endl;
-	cout << "--------------------" << endl;
-	cout << "--------------------" << endl;
-	cout << "--------------------" << endl;
-	cout << "--------------------" << endl;
-}
-void FluxTestare2()
-{
-	Group g1;
-	cin >> g1;	// citim toate informatiile unei grupe
-	//	134A 
-	//	3 
-	//	marius 1999 7.5 20 
-	//	alex 2001 8.1 54 
-	//	paul 2000 9 60
-	// 1
-	// Dumitran 1981 Info 7
-	g1.SetGroupName("151B"); // redenumim grupa
-	Teacher t("Damian", 1966, "Masculin", "Mate", 15);
-	g1 += t;		// adaugam un profesor la grupa folosind +=
-	g1.RemoveStudent("alex");	// eliminam un student dupa nume
-	cout << g1; // afisam informatiile despre grupa
-	system("pause");	// press any key to continue
-	cout << endl;
-	cout << "--------------------" << endl;
-	cout << "--------------------" << endl;
-	cout << "--------------------" << endl;
-	Student s1("Dan", 1997, "masculin", 30, 5.5), s2("Denis", 2000, "masculin", 45, 6.1);		
-	Teacher t1("Karl", 1967, "masculin", "Mate", 5);
-	Group g2("140F", { s1, s2 }, { t1 });	// initializare directa a unei grupe
-
-	cout << g1 + g2;		// concatenam studentii si profesorii grupei 2 la grupa 1
-
-
-
-}
-int main()
-{
-	string user_input;
-	int person_count = 0, building_count = 0;
-	Person* p_person[100];
-	Building* p_building[100];
 	while (true)										/////// meniu
 	{
-		cout << "Alege o categorie pe care s-o modifici: " << endl;
+		cout << "Alege o optiune: " << endl;
 		cout << "1. Studenti" << endl;
 		cout << "2. Profesori" << endl;
 		cout << "3. Studenti profesori" << endl;
 		cout << "4. Facultati" << endl;
 		cout << "5. Camine" << endl;
 		cout << "6. Inchide progrmaul" << endl;
+		cout << "7. Afiseaza toate informatiile facultatii" << endl;
 
 		getline(cin, user_input);
 		try
 		{
-			if (user_input.size() != 1 || char(user_input[0]) > '6' || char(user_input[0]) < '1')
+			if (user_input.size() != 1 || char(user_input[0]) > '7' || char(user_input[0]) < '1')
 				throw 1;
 			ClearScreen();
 			if (char(user_input[0]) == '1')			/// meniu student
@@ -284,7 +211,7 @@ int main()
 					getline(cin, user_input);
 					try
 					{
-						if (user_input.size() != 1 || char(user_input[0]) > '5' || char(user_input[0]) < '1')
+						if (user_input.size() != 1 || char(user_input[0]) > '8' || char(user_input[0]) < '1')
 							throw 2;
 						else if ((char(user_input[0]) == '8'))
 						{
@@ -294,11 +221,15 @@ int main()
 						else if ((char(user_input[0]) == '7'))
 						{
 							ClearScreen();
+							cout << "Lista materii: " << endl;
 							for (string s : Teacher::GetValidSubjects())
 								cout << s << endl;
+							cout << endl;
 						}
+						
 						else if ((char(user_input[0]) == '6'))
 						{
+							ClearScreen();
 							cout << "Introduceti numele materiei" << endl;
 							getline(cin, user_input);
 							Teacher::AddValidSubject(user_input);
@@ -893,8 +824,18 @@ int main()
 						cout << "Input invalid! Reintroduceti datele." << err << endl << endl;
 					}
 				}
-			if (char(user_input[0]) == '6')
+			else if (char(user_input[0]) == '6')
 				break;
+			else if (char(user_input[0]) == '7')
+			{
+				cout << "		Persoane:" << endl;
+				for (int i=0; i<person_count;i++)
+					cout << *p_person[i] << endl;
+				cout << "		Cladiri:" << endl;
+				for (int i = 0; i < building_count; i++)
+					cout << *p_building[i] << endl;
+
+			}
 
 		}
 		catch (int err)
@@ -903,8 +844,55 @@ int main()
 				cout << "Input invalid! Reintroduceti datele." << err << endl << endl;
 		}
 	}
-	return 0;
-
-
 } 
+
+int main()
+{
+	p_person[0] = new Student();											// constructor neparametrizat
+	p_person[1] = new Student("Dan", 2001, "m", 40, 7.5);					// constructor parametrizat
+	p_person[2] = new Student(*dynamic_cast<Student*>(p_person[1]));		// downcast pentru a folosi constructorul de copiere
+	p_person[3] = new Teacher("Mark", 1977, "m", "mate", 10);
+	p_person[4] = new Teacher("Ela", 1989, "f", "info", 4);
+	p_person[5] = new StudentTeacher("Liviu", 1999, "m", 45, 10, "Algebra", 1);			// clasa cu 2 mosteniri virtuale
+	p_person[6] = new StudentTeacher();										
+	*dynamic_cast<StudentTeacher*>(p_person[6]) = *dynamic_cast<StudentTeacher*>(p_person[5]);						// operator de atribuire 
+	person_count = 7;
+
+	p_building[0] = new Faculty("FMI", "universitate", 1200, 4, 3, 30, 25, { {"Info", 15}, {"Mate", 10} });	
+	p_building[1] = new Faculty("Litere", "universitate", 1320, 5, 5, 15, 20, { {"Romana", 10}, {"Franceza", 10} });
+	p_building[2] = new Faculty(*dynamic_cast<Faculty*>(p_building[0]));
+	p_building[3] = new StudentDorm("Nr. 4", "piata romana", 900, 3, 50, 100, { {3, 25}, {1, 25} });
+	p_building[4] = new StudentDorm("Nr. 7", "militari", 1203, 4, 40, 120, { {3, 40} });
+	building_count = 5;
+
+	cout << "Materii: ";
+	for (string s : Teacher::GetValidSubjects())					// exemplu de functie statica
+		cout << s << " ";
+	cout << endl;
+
+	for (int i = 0; i < building_count; i++)
+		cout << *p_building[i] << endl;					// afisare corecta pe baza functiei virtuale Print
+	for (int i = 0; i < person_count; i ++)
+	{
+		if (typeid(*p_person[i]) == typeid(Student))							// afisare corecta pe baza downcasting ului
+		{
+			Student* s = dynamic_cast<Student*>(p_person[i]);
+			cout << *s << endl;
+		}
+		else if (typeid(*p_person[i]) == typeid(Teacher))
+		{
+			Teacher* t = dynamic_cast<Teacher*>(p_person[i]);
+			cout << *t << endl;
+		}
+		else if (typeid(*p_person[i]) == typeid(StudentTeacher))
+		{
+			StudentTeacher* st = dynamic_cast<StudentTeacher*>(p_person[i]);
+			cout << *st << endl;
+		}
+									
+	}
+	system("pause");
+	meniu();		// meniu interactiv
+								
+}
 
